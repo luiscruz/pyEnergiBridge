@@ -32,6 +32,12 @@ Create a file named `.pyenergibridge_config.json` in your home directory:
 ### 2. Project Directory Configuration:
 Create a file named `pyenergibridge_config.json` in your project directory:
 
+```json
+{
+    "binary_path": "/custom/path/to/EnergiBridge/home"
+}
+```
+
 pyEnergiBridge will first look for the configuration file in the project directory, and if it is not found, it will look for the configuration file in the home directory. If no configuration files are found, it will check if `EnergiBridge` is available in the system's PATH. If none of these methods provide a valid path, it will raise a `FileNotFoundError`.
 
 ## Usage
