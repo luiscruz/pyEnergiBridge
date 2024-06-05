@@ -2,6 +2,7 @@ import os
 import subprocess
 import signal
 from functools import wraps
+import time
 
 class EnergiBridgeRunner:
   def __init__(self, results_file=None, command="dup"):
