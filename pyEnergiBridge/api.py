@@ -46,12 +46,12 @@ class EnergiBridgeRunner:
 
     return binary_path
 
-  def start(self, results_file=None, command="nop"):
+  def start(self, results_file=None, command=["nop"]):
     args = ["--summary"]
     if results_file:
       print(f"Results will be printed to {results_file}")
       args.extend(["-o", results_file])
-    args.append(command)
+    args.extend(command)
 
     try:
       self.process = subprocess.Popen([self.binary_path] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
