@@ -75,6 +75,7 @@ class EnergiBridgeRunner:
 
   def _process_stdout(self, output):
     lines = output.split('\n')
+    print(".".join(lines[-10:]))
     for line in lines:
       if "Energy consumption in joules: " in line:
         parts = line.split(":")

@@ -17,4 +17,11 @@ setup(
     extras_require={
         'ipython': ['ipython']
     },
+    # Metadata
+    author='Luis Cruz',
+    author_email='luismirandacruz@gmail.com',
+    # description='A description of my_library',
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
+    url='https://github.com/luiscruz/pyEnergiBridge',
 )
