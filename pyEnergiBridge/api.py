@@ -46,7 +46,7 @@ class EnergiBridgeRunner:
 
     return binary_path
 
-  def start(self, results_file=None, command=["nop"]):
+  def start(self, results_file=None, command=["sleep", "1000000"]): #timeoout 100 days
     args = ["--summary"]
     if results_file:
       print(f"Results will be printed to {results_file}")
