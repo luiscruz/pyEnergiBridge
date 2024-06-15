@@ -77,3 +77,26 @@ def my_task():
 my_task()
 ```
 Make sure to check the "results.csv" file to confirm that the energy consumption data has been stored successfully.
+
+### IPython Magic Commands
+
+You can use IPython magic commands to measure energy consumption and execution time for code cells and lines directly within Jupyter notebooks.
+
+#### Cell Magic
+
+Use the %%measure_energy_time_cell magic command to measure the energy consumption and execution time of an entire cell:
+
+```python
+%%measure_energy_time_cell
+import time
+time.sleep(2)
+print("Task completed.")
+```
+#### Line Magic
+
+Use the %measure_energy_time_line magic command to measure the energy consumption and execution time of a single line of code:
+
+```python
+%measure_energy_time_line time.sleep(2)
+print("Task completed.")
+```
