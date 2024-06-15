@@ -84,7 +84,7 @@ You can use IPython magic commands to measure energy consumption and execution t
 
 #### Cell Magic
 
-Use the %%measure_energy_time_cell magic command to measure the energy consumption and execution time of an entire cell:
+Use the `%%measure_energy_time_cell` magic command to measure the energy consumption and execution time of an entire cell:
 
 ```python
 %%measure_energy_time_cell
@@ -94,7 +94,7 @@ print("Task completed.")
 ```
 #### Line Magic
 
-Use the %measure_energy_time_line magic command to measure the energy consumption and execution time of a single line of code:
+Use the `%measure_energy_time_line` magic command to measure the energy consumption and execution time of a single line of code:
 
 ```python
 %measure_energy_time_line time.sleep(2)
