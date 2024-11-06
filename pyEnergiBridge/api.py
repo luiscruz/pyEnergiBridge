@@ -6,15 +6,21 @@ import json
 from pathlib import Path
 import shutil
 import time
+import logging
 
 class EnergiBridgeRunner:
-  def __init__(self, results_file=None, command="dup"):
+  def __init__(self, results_file=None, command="dup", verbose=True):
     self.process = None
     self.default_path = Path('..') / "bin" / "EnergiBridge"
     self.command_name = "EnergiBridge"
     self.config_path_home = Path.home() / '.pyenergibridge_config.json'
     self.config_path_project = Path('.') / 'pyenergibridge_config.json'
     self.binary_path = self._load_config()
+    self.logger = logging.getLogger(self.__class__.__name__)
+
+    if verbose:
+        self.logger.setLevel(logging.INFO)
+        self.logger.addHandler(logging.StreamHandler())
     
   def _load_config(self):
     config = {}
@@ -49,13 +55,13 @@ class EnergiBridgeRunner:
   def start(self, results_file=None, command=["sleep", "1000000"]): #timeoout 100 days
     args = ["--summary"]
     if results_file:
-      print(f"Results will be printed to {results_file}")
+      self.logger.info(f"Results will be printed to {results_file}")
       args.extend(["-o", results_file])
     args.extend(command)
 
     try:
       self.process = subprocess.Popen([self.binary_path] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-      print(f"Running EnergiBridge from: {self.binary_path}; started with PID: {self.process.pid}")
+      self.logger.info(f"Running EnergiBridge from: {self.binary_path}; started with PID: {self.process.pid}")
     except OSError as e:
       raise RuntimeError(f"Failed to start EnergiBridge: {e}") from e
 
@@ -64,13 +70,13 @@ class EnergiBridgeRunner:
       try:
         self.process.terminate()  # Use terminate for all platforms
         stdout, stderr = self.process.communicate()  # Wait for process to terminate
-        print("EnergiBridge stopped.")
+        self.logger.info("EnergiBridge stopped.")
         return self._process_stdout(stdout)
       except Exception as e:
-        print(f"Failed to stop EnergiBridge: {e}")
+        self.logger.info(f"Failed to stop EnergiBridge: {e}")
         return None, None
     else:
-      print("EnergiBridge is not running.")
+      self.logger.info("EnergiBridge is not running.")
       return None, None
 
   def _process_stdout(self, output):
