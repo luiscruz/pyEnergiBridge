@@ -25,7 +25,7 @@ Create a file named `.pyenergibridge_config.json` in your home directory:
 
 ```json
 {
-    "binary_path": "/custom/path/to/EnergiBridge/home"
+    "binary_path": "/custom/path/to/EnergiBridge/binary/executable
 }
 ```
 
@@ -34,7 +34,7 @@ Create a file named `pyenergibridge_config.json` in your project directory:
 
 ```json
 {
-    "binary_path": "/custom/path/to/EnergiBridge/home"
+    "binary_path": "/custom/path/to/EnergiBridge/binary/executable"
 }
 ```
 
