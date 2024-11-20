@@ -100,3 +100,16 @@ Use the `%measure_energy_time_line` magic command to measure the energy consumpt
 %measure_energy_time_line time.sleep(2)
 print("Task completed.")
 ```
+
+### Usage With Docker
+
+Due to different process management in Docker containers, you need to set the `is_containerized` flag on instantiation of the `EnergiBridgeRunner`:
+
+```python
+from pyEnergiBridge.api import EnergiBridgeRunner
+
+runner = EnergiBridgeRunner(is_containerized=True)
+```
+
+> Note: this only works for Linux Docker containers and will fail on Windows.
+

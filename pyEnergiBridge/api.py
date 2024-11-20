@@ -9,7 +9,7 @@ import time
 import logging
 
 class EnergiBridgeRunner:
-  def __init__(self, results_file=None, command="dup", verbose=True):
+  def __init__(self, results_file=None, command="dup", verbose=True, is_containerized=False):
     self.process = None
     self.default_path = Path('..') / "bin" / "EnergiBridge"
     self.command_name = "EnergiBridge"
@@ -17,6 +17,7 @@ class EnergiBridgeRunner:
     self.config_path_project = Path('.') / 'pyenergibridge_config.json'
     self.binary_path = self._load_config()
     self.logger = logging.getLogger(self.__class__.__name__)
+    self.is_containerized = is_containerized
 
     if verbose:
         self.logger.setLevel(logging.INFO)
@@ -60,7 +61,9 @@ class EnergiBridgeRunner:
     args.extend(command)
 
     try:
-      self.process = subprocess.Popen([self.binary_path] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+      preexec_fn = os.setpgrp if self.is_containerized else None
+
+      self.process = subprocess.Popen([self.binary_path] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, preexec_fn=preexec_fn)
       self.logger.info(f"Running EnergiBridge from: {self.binary_path}; started with PID: {self.process.pid}")
     except OSError as e:
       raise RuntimeError(f"Failed to start EnergiBridge: {e}") from e
@@ -68,7 +71,11 @@ class EnergiBridgeRunner:
   def stop(self):
     if self.process:
       try:
-        self.process.terminate()  # Use terminate for all platforms
+        if self.is_containerized:
+          os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
+        else:
+          self.process.terminate()  # Use terminate for all platforms
+
         stdout, stderr = self.process.communicate()  # Wait for process to terminate
         self.logger.info("EnergiBridge stopped.")
         return self._process_stdout(stdout)
