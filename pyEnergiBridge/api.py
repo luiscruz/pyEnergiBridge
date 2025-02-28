@@ -53,7 +53,10 @@ class EnergiBridgeRunner:
 
     return binary_path
 
-  def start(self, results_file=None, command=["sleep", "1000000"]): #timeoout 100 days
+  def start(self, results_file=None, command=None):
+    if not command:
+      command = ["timeout" if os.name == "nt" else "sleep", "1000000"]
+
     args = ["--summary"]
     if results_file:
       self.logger.info(f"Results will be printed to {results_file}")
@@ -73,8 +76,11 @@ class EnergiBridgeRunner:
       try:
         if self.is_containerized:
           os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
+        elif os.name == "nt":
+          # http://mackeblog.blogspot.com/2012/05/killing-subprocesses-on-windows-in.html
+          subprocess.call(["taskkill", "/F", "/T", "/PID", str(self.process.pid)])
         else:
-          self.process.terminate()  # Use terminate for all platforms
+          self.process.terminate() # UNIX platforms
 
         stdout, stderr = self.process.communicate()  # Wait for process to terminate
         self.logger.info("EnergiBridge stopped.")
