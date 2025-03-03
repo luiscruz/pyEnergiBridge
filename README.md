@@ -60,6 +60,15 @@ energy, duration = runner.stop()
 print(f"Energy consumption (J): {energy}; Execution time (s): {duration}")
 ```
 
+> If your task may raise an exception, ensure it is wrapped in a `try/finally` block, similar to how it's handled in the `with_energibridge` wrapper.
+
+```python
+try:
+  your_task()
+finally:
+  energy, duration = runner.stop()
+```
+
 ### Using Decorator
 You can also use a decorator to simplify the process:
 
